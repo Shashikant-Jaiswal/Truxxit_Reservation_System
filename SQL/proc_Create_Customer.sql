@@ -1,0 +1,45 @@
+use truxxit;
+
+drop procedure if exists Create_Customer;
+
+DELIMITER //
+ CREATE PROCEDURE Create_Customer( 
+ IN lgnid VARCHAR(25),
+ IN fname VARCHAR(25),
+ IN lname VARCHAR(25),
+ IN email VARCHAR(25),
+ IN pwd VARCHAR(25),
+ IN strt VARCHAR(25),
+ IN city VARCHAR(25),
+ IN state VARCHAR(25),
+ IN zip VARCHAR(25),
+ IN dob VARCHAR(25),
+ IN sex VARCHAR(25),
+ IN membership VARCHAR(25),
+ IN cardno VARCHAR(25),
+ IN cardcvv VARCHAR(25),
+ IN cardexp VARCHAR(25) )
+
+   BEGIN
+		DECLARE TEMP_SYS_ID INT;
+
+        DECLARE EXIT HANDLER FOR SQLEXCEPTION
+			  BEGIN
+				  ROLLBACK;
+			END;
+		  
+		  START TRANSACTION;
+		  
+		     INSERT INTO USER (LOGIN_ID,FIRST_NAME,LAST_NAME,EMAIL_ID,PASSWORD,STREET,CITY,STATE,ZIP,DOB,SEX) VALUES (LGNID,FNAME,LNAME,EMAIL,PWD,STRT,CITY,STATE,ZIP,DOB,SEX);
+
+			 SELECT MAX(SYS_ID) INTO TEMP_SYS_ID FROM USER;
+			 
+			 INSERT INTO TEMP_TABLE VALUES (TEMP_SYS_ID,LGNID,FNAME,LNAME,EMAIL,PWD,STRT,CITY,STATE,ZIP,DOB,SEX,MEMBERSHIP,CARDNO,CARDCVV,CARDEXP );
+			 
+		  COMMIT;
+   END //
+ DELIMITER ;
+ 
+
+-- Procedure call
+-- CALL Create_Customer('aabb','aa','aa','aa','aa','aa','aa','aa','aa','2006-07-18','Male','Gold','1111','111','11/2030');
